@@ -7,11 +7,24 @@
 struct Ticket {
     title: String,
     description: String,
-    status: String,
+    status: Status,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq)]
 enum Status {
-    // TODO: add the missing variants
+    ToDo,
+    InProgress,
+    Done,
+}
+impl From<String> for Status {
+    fn from(value: String) -> Self {
+        match value.as_str() {
+            "To-Do" => Status::ToDo,
+            "In Progress" => Status::ToDo,
+            "Done" => Status::ToDo,
+            _ => panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed"),
+        }
+    }
 }
 
 impl Ticket {
@@ -28,14 +41,15 @@ impl Ticket {
         if description.len() > 500 {
             panic!("Description cannot be longer than 500 bytes");
         }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
+        // if [Status::Done, Status::InProgress, Status::ToDo].contains(status) {
+        if matches!(&status, Status) {
             panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
         }
 
         Ticket {
             title,
             description,
-            status,
+            status: status.into(),
         }
     }
 
@@ -47,7 +61,7 @@ impl Ticket {
         &self.description
     }
 
-    pub fn status(&self) -> &String {
+    pub fn status(&self) -> &Status {
         &self.status
     }
 }

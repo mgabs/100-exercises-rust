@@ -7,7 +7,7 @@ struct Ticket {
     status: Status,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 enum Status {
     ToDo,
     InProgress { assigned_to: String },
@@ -36,7 +36,18 @@ impl Ticket {
         }
     }
     pub fn assigned_to(&self) -> Option<&String> {
-        todo!()
+        // using match
+        // match &self.status {
+        //     Status::InProgress { assigned_to } => Some(assigned_to.into()),
+        //     _ => None,
+        // }
+
+        // Implement if let
+        if let Status::InProgress { assigned_to } = &self.status {
+            Some(&assigned_to)
+        } else {
+            None
+        }
     }
 }
 
