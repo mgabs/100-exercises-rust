@@ -1,13 +1,32 @@
+use std::fmt::Display;
+use thiserror;
+
 // TODO: Implement the `Error` trait for `TicketNewError` using `thiserror`.
 //   We've changed the enum variants to be more specific, thus removing the need for storing
 //   a `String` field into each variant.
 //   You'll also have to add `thiserror` as a dependency in the `Cargo.toml` file.
 
+#[derive(thiserror::Error, Debug)]
 enum TicketNewError {
     TitleCannotBeEmpty,
     TitleTooLong,
     DescriptionCannotBeEmpty,
     DescriptionTooLong,
+}
+
+impl Display for TicketNewError {
+    // add code here
+
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            TicketNewError::TitleCannotBeEmpty => write!(f, "Title cannot be empty"),
+            TicketNewError::TitleTooLong => write!(f, "Title cannot be longer than 50 bytes"),
+            TicketNewError::DescriptionTooLong => {
+                write!(f, "Description cannot be longer than 500 bytes")
+            }
+            TicketNewError::DescriptionCannotBeEmpty => write!(f, "Description cannot be empty"),
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Clone)]

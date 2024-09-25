@@ -4,7 +4,12 @@
 use std::thread;
 
 pub fn sum(slice: &'static [i32]) -> i32 {
-    todo!()
+    let mid = slice.len() / 2;
+
+    let lhs = thread::spawn(move || slice[..mid].iter().sum::<i32>());
+    let rhs = thread::spawn(move || slice[mid..].iter().sum::<i32>());
+
+    lhs.join().expect("Couldn't unwrap thread") + rhs.join().expect("Couldn't unwrap thread")
 }
 
 #[cfg(test)]
